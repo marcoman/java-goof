@@ -82,7 +82,7 @@ public class TodoAction extends BaseAction {
     }
 
     public String doUpload() {
-        if (this.contentType.equals("application/zip")) {
+        if ("application/zip".equals(this.contentType)) {
             System.out.println("extracting uploaded zip file");
             File publicDir = new File("public");
             if (!publicDir.exists())
