@@ -17,11 +17,32 @@ jobs:
 
   build-log4shell-server-image:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_REPO: 'marco-dev-docker'
+      IMAGE_NAME: 'log4shell-goof:${{ github.run_number }}'
+      JF_URL: https://${{ vars.JF_URL }}/
+      DOCKER_CLI_EXPERIMENTAL: enabled
     defaults:
       run:
         working-directory: log4shell-goof/log4shell-server
     steps:
       - uses: actions/checkout@v2
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        id: setup-cli
+        env:
+          JF_URL: https://${{ vars.JF_URL }}/
+          JF_PROJECT: ${{ vars.JF_PROJECT }}
+        with:
+            oidc-provider-name: github-oidc-marco
+
+      - name: Authenticate Docker
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.JF_URL }}
+          username: ${{ steps.setup-cli.outputs.oidc-user }}
+          password: ${{ steps.setup-cli.outputs.oidc-token }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -46,25 +67,25 @@ jobs:
       - name: Cleanup container
         run: docker kill log4shell-server
 
-      - name: Start minikube
-        uses: medyagh/setup-minikube@master
-        with:
-          cni: calico
+      # - name: Start minikube
+      #   uses: medyagh/setup-minikube@master
+      #   with:
+      #     cni: calico
 
-      - name: Deploy to minikube
-        run: |
-          sed -i 's/${DOCKER_ACCOUNT}\///' k8s/deploy.yaml
-          sed -i 's/imagePullPolicy: Always/imagePullPolicy: Never/' k8s/deploy.yaml
-          minikube image load log4shell-server:latest
-          kubectl apply -f k8s/deploy.yaml
+      # - name: Deploy to minikube
+      #   run: |
+      #     sed -i 's/${DOCKER_ACCOUNT}\///' k8s/deploy.yaml
+      #     sed -i 's/imagePullPolicy: Always/imagePullPolicy: Never/' k8s/deploy.yaml
+      #     minikube image load log4shell-server:latest
+      #     kubectl apply -f k8s/deploy.yaml
 
-      - name: Test pods came up cleanly
-        run: |
-          kubectl get all --namespace=darkweb && \
-          kubectl wait --namespace=darkweb --for=condition=ready pod --selector=app=log4shell --timeout=90s
+      # - name: Test pods came up cleanly
+      #   run: |
+      #     kubectl get all --namespace=darkweb && \
+      #     kubectl wait --namespace=darkweb --for=condition=ready pod --selector=app=log4shell --timeout=90s
 
-      - name: Dump pod description
-        if: ${{ failure() }}
-        run: |
-          kubectl describe pod --namespace=darkweb --selector=app=log4shell
-          kubectl describe deploy --namespace=darkweb --selector=app=log4shell
+      # - name: Dump pod description
+      #   if: ${{ failure() }}
+      #   run: |
+      #     kubectl describe pod --namespace=darkweb --selector=app=log4shell
+      #     kubectl describe deploy --namespace=darkweb --selector=app=log4shell

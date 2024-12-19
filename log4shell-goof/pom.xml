@@ -19,4 +19,16 @@
     <module>log4shell-server</module>
     <module>log4shell-client</module>
   </modules>
+<distributionManagement>
+    <repository>
+        <id>central</id>
+        <name>SolEng Enterprise SaaS-releases</name>
+        <url>https://soleng.jfrog.io/artifactory/marco-maven-dev-virtual</url>
+    </repository>
+    <snapshotRepository>
+        <id>snapshots</id>
+        <name>SolEng Enterprise SaaS-snapshots</name>
+        <url>https://soleng.jfrog.io/artifactory/marco-maven-dev-virtual</url>
+    </snapshotRepository>
+</distributionManagement>
 </project>

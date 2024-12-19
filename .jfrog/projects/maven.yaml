@@ -1,0 +1,10 @@
+version: 1
+type: maven
+resolver:
+    serverId: https://soleng.jfrog.io
+    snapshotRepo: marco-maven-dev-virtual
+    releaseRepo: marco-maven-dev-virtual
+deployer:
+    serverId: https://soleng.jfrog.io
+    snapshotRepo: marco-maven-dev-virtual
+    releaseRepo: marco-maven-dev-virtual
