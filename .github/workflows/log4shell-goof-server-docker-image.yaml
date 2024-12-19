@@ -13,6 +13,11 @@ on:
     paths:
       - 'log4shell-goof/log4shell-goof-server/**'
       - '.github/workflows/log4shell-goof-server-docker-image.yaml'
+permissions:
+  actions: read # for detecting the Github Actions environment.
+  id-token: write # for creating OIDC tokens for signing.
+  packages: write # for uploading attestations.
+  contents: read
 jobs:
 
   build-log4shell-server-image:
@@ -26,7 +31,8 @@ jobs:
       run:
         working-directory: log4shell-goof/log4shell-server
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
