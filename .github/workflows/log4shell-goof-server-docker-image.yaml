@@ -19,7 +19,6 @@ permissions:
   packages: write # for uploading attestations.
   contents: read
 jobs:
-
   build-log4shell-server-image:
     runs-on: ubuntu-24.04
     env:
@@ -43,7 +42,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3                 
 
@@ -64,6 +62,7 @@ jobs:
           context: log4shell-goof/log4shell-server
           push: true
           tags: log4shell-server:latest
+          oidc-provider-name: github-oidc-marco
           
       - name: docker scan
         run: |  
