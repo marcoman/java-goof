@@ -37,8 +37,10 @@ jobs:
           JF_URL: https://${{ vars.JF_URL }}/
           JF_PROJECT: ${{ vars.JF_PROJECT }}
         with:
-            oidc-provider-name: github-oidc-marco
-
+            # oidc-provider-name: github-oidc-marco
+            username: ${{ secrets.JF_USERNAME }}
+            password: ${{ secrets.JF_TOKEN }}
+  
       - name: Checkout repository
         uses: actions/checkout@v2
 
