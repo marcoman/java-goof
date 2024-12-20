@@ -21,7 +21,7 @@ permissions:
 jobs:
 
   build-log4shell-server-image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       DOCKER_REPO: 'marco-dev-docker'
       IMAGE_NAME: 'log4shell-goof:${{ github.run_number }}'
@@ -60,6 +60,9 @@ jobs:
           context: log4shell-goof/log4shell-server
           push: true
           tags: log4shell-server:latest
+          registry: ${{ vars.JF_URL }}
+          username: ${{ steps.setup-cli.outputs.oidc-user }}
+          password: ${{ steps.setup-cli.outputs.oidc-token }}
 
       - name: docker scan
         run: |  
