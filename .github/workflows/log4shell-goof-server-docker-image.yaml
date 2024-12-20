@@ -31,9 +31,6 @@ jobs:
       run:
         working-directory: log4shell-goof/log4shell-server
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         id: setup-cli
@@ -42,6 +39,13 @@ jobs:
           JF_PROJECT: ${{ vars.JF_PROJECT }}
         with:
             oidc-provider-name: github-oidc-marco
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3                 
 
       - name: Authenticate Docker
         uses: docker/login-action@v3
@@ -60,10 +64,7 @@ jobs:
           context: log4shell-goof/log4shell-server
           push: true
           tags: log4shell-server:latest
-          registry: ${{ vars.JF_URL }}
-          username: ${{ steps.setup-cli.outputs.oidc-user }}
-          password: ${{ steps.setup-cli.outputs.oidc-token }}
-
+          
       - name: docker scan
         run: |  
             jf docker pull ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
