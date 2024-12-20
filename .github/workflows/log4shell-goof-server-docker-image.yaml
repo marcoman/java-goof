@@ -58,8 +58,27 @@ jobs:
         with:
           load: true
           context: log4shell-goof/log4shell-server
-          push: false
+          push: true
           tags: log4shell-server:latest
+
+      - name: docker scan
+        run: |  
+            jf docker pull ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+            jf docker scan ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}   
+
+      - name: publish build info
+        run: |
+          jf rt build-collect-env 
+          jf rt build-add-dependencies .
+          jf rt build-add-git
+          jf rt build-publish
+
+      - name: build scan
+        run: |
+          echo "sleeping for 45 seconds"
+          sleep 45
+          echo "waking up."
+          jf build-scan
 
       - name: Run container
         run: docker run -d --rm --name log4shell-server log4shell-server:latest && sleep 5
@@ -95,3 +114,15 @@ jobs:
       #   run: |
       #     kubectl describe pod --namespace=darkweb --selector=app=log4shell
       #     kubectl describe deploy --namespace=darkweb --selector=app=log4shell
+      - name: Write to workflow job summary
+        run: |
+              NOTE=$'>[!NOTE]\n>Frog Notes \n'
+              TIP=$'>[!TIP]\n>Hello JFrog\n'
+              IMPORTANT=$'>[!IMPORTANT]\n>Hello IMPORTANT NOTE\n'
+              WARNING=$'>[!WARNING]\n>Hello WARNING NOTE\n'
+              CAUTION=$'>[!CAUTION]\n>Hello CAUTION NOTE\n'
+              echo "$NOTE" >> $GITHUB_STEP_SUMMARY
+              echo "$TIP" >> $GITHUB_STEP_SUMMARY
+              echo "$IMPORTANT" >> $GITHUB_STEP_SUMMARY
+              echo "$WARNING" >> $GITHUB_STEP_SUMMARY
+              echo "$CAUTION" >> $GITHUB_STEP_SUMMARY
