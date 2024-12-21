@@ -14,12 +14,20 @@ on:
       - 'todolist-goof/**'
       - '.github/workflows/todolist-goof-docker-image.yaml'
 
+  workflow_dispatch:
+    inputs:
+      description:
+        description: 'Why you triggered'
+        required: true
+        type: string
+        
 jobs:
   build-todolist-image:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: todolist-goof
+
     steps:
       - uses: actions/checkout@v2
 
