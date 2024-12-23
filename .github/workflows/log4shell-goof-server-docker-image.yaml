@@ -74,9 +74,13 @@ jobs:
       - name: docker CLI build
         run: |
           docker buildx ls
+          echo "show version"
           jf docker --version
+          echo "build docker image"
           jf docker build --tag ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME}} --platform linux/amd64 --metadata-file metadata.json --push .
+          echo "docker push ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME}}"
           jf docker push ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME}} --project marco
+          echo "finish docker push."
 
       # - name: Build
       #   uses: docker/build-push-action@v2
