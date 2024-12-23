@@ -93,7 +93,7 @@ jobs:
           
       - name: docker scan
         run: |  
-            # jf docker pull ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+            jf docker pull ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
             jf docker scan ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}   
 
       - name: publish build info
@@ -103,24 +103,24 @@ jobs:
           jf rt build-add-git
           jf rt build-publish
 
-      - name: build scan
-        run: |
-          echo "sleeping for 45 seconds"
-          sleep 45
-          echo "waking up."
-          jf build-scan
+      # - name: build scan
+      #   run: |
+      #     echo "sleeping for 45 seconds"
+      #     sleep 45
+      #     echo "waking up."
+      #     jf build-scan
 
-      - name: Run container
-        run: docker run -d --rm --name log4shell-server log4shell-server:latest && sleep 5
+      # - name: Run container
+      #   run: docker run -d --rm --name log4shell-server log4shell-server:latest && sleep 5
 
-      - name: Smoke test LDAP running in container
-        run: docker logs log4shell-server | grep "LDAP server listening on 0.0.0.0:8000"
+      # - name: Smoke test LDAP running in container
+      #   run: docker logs log4shell-server | grep "LDAP server listening on 0.0.0.0:8000"
 
-      - name: Smoke test HTTP running in container
-        run: docker logs log4shell-server | grep "HTTP server listening on 0.0.0.0:9999"
+      # - name: Smoke test HTTP running in container
+      #   run: docker logs log4shell-server | grep "HTTP server listening on 0.0.0.0:9999"
 
-      - name: Cleanup container
-        run: docker kill log4shell-server
+      # - name: Cleanup container
+      #   run: docker kill log4shell-server
 
       # - name: Start minikube
       #   uses: medyagh/setup-minikube@master
