@@ -77,7 +77,7 @@ jobs:
           echo "show version"
           jf docker --version
           echo "build docker image"
-          jf docker build --tag ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME}} --platform linux/amd64 --metadata-file metadata.json --push .
+          jf docker build --tag ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME}} --platform linux/amd64 --metadata-file metadata.json .
           echo "docker push ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME}}"
           jf docker push ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME}} --project marco
           echo "finish docker push."
