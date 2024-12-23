@@ -42,7 +42,7 @@ jobs:
         working-directory: log4shell-goof/log4shell-server
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup JFrog CLI 🐸
         uses: jfrog/setup-jfrog-cli@v4
@@ -50,6 +50,7 @@ jobs:
         env:
           JF_URL: https://${{ vars.JF_URL }}/
           JF_PROJECT: ${{ vars.JF_PROJECT }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_TOKEN }}
 
       - name: Health check JFrog Artifactory instance 🐸
         run: |
