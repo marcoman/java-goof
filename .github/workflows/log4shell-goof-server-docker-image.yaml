@@ -57,6 +57,7 @@ jobs:
           jf --version
           jf rt ping
           jf config show
+          docker logout ${{ vars.JF_URL }}
 
       # - name: Set up QEMU
       #   uses: docker/setup-qemu-action@v3                 
