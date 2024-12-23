@@ -30,7 +30,7 @@ permissions:
 env:
   DOCKER_REPO: 'marco-dev-docker'
   IMAGE_NAME: 'log4shell-goof:${{ github.run_number }}'
-  JF_URL: https://${{ vars.JF_URL }}/
+  JF_URL: ${{ vars.JF_URL }}
   JF_PROJECT: ${{ vars.JF_PROJECT }}
   DOCKER_CLI_EXPERIMENTAL: enabled
 
@@ -47,12 +47,18 @@ jobs:
         env:
           JF_URL: https://${{ vars.JF_URL }}/
           JF_PROJECT: ${{ vars.JF_PROJECT }}
-  
+
+      - name: Health check JFrog Artifactory instance 🐸
+        run: |
+          jfrog --version
+          jfrog rt ping
+          jfrog config show
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3                 
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3                 
 
       - name: Authenticate Docker
         uses: docker/login-action@v3
