@@ -41,6 +41,9 @@ jobs:
       run:
         working-directory: log4shell-goof/log4shell-server
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Setup JFrog CLI 🐸
         uses: jfrog/setup-jfrog-cli@v4
         id: setup-cli
@@ -50,12 +53,9 @@ jobs:
 
       - name: Health check JFrog Artifactory instance 🐸
         run: |
-          jfrog --version
-          jfrog rt ping
-          jfrog config show
-
-      - name: Checkout repository
-        uses: actions/checkout@v2
+          jf --version
+          jf rt ping
+          jf config show
 
       # - name: Set up QEMU
       #   uses: docker/setup-qemu-action@v3                 
