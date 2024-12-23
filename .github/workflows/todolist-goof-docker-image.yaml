@@ -13,7 +13,13 @@ on:
     paths:
       - 'todolist-goof/**'
       - '.github/workflows/todolist-goof-docker-image.yaml'
-
+  workflow_dispatch:
+    inputs:
+      description:
+        description: 'Describe manual trigger'
+        required: true
+        type: string
+        
 jobs:
   build-todolist-image:
     runs-on: ubuntu-latest

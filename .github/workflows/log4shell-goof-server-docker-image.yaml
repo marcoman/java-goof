@@ -13,6 +13,13 @@ on:
     paths:
       - 'log4shell-goof/log4shell-goof-server/**'
       - '.github/workflows/log4shell-goof-server-docker-image.yaml'
+  workflow_dispatch:
+    inputs:
+      description:
+        description: 'Description'
+        required: true
+        type: string
+      
 permissions:
   actions: read # for detecting the Github Actions environment.
   id-token: write # for creating OIDC tokens for signing.
