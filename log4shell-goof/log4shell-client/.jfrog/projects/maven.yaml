@@ -1,0 +1,10 @@
+version: 1
+type: maven
+resolver:
+    serverId: soleng-marco
+    snapshotRepo: marco-maven-dev-virtual
+    releaseRepo: marco-maven-dev-virtual
+deployer:
+    serverId: soleng-marco
+    snapshotRepo: marco-maven-dev-virtual
+    releaseRepo: marco-maven-dev-virtual
