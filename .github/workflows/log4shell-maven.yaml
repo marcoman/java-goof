@@ -1,4 +1,4 @@
-name: log4shell-goof-server Docker image build and test
+name: log4shell-maven build and deploy
 
 on:
   push:
