@@ -1,0 +1,74 @@
+name: log4shell-goof-server Docker image build and test
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'log4shell-goof/log4shell-goof-server/**'
+      - '.github/workflows/log4shell-goof-server-docker-image.yaml'
+  pull_request:
+    branches:
+      - 'main'
+    paths:
+      - 'log4shell-goof/log4shell-goof-server/**'
+      - '.github/workflows/log4shell-goof-server-docker-image.yaml'
+  workflow_dispatch:
+    inputs:
+      description:
+        description: 'Description'
+        required: true
+        type: string
+      
+permissions:
+  actions: read # for detecting the Github Actions environment.
+  id-token: write # for creating OIDC tokens for signing.
+  packages: write # for uploading attestations.
+  contents: read
+  security-events: write # Required for code scanning
+
+env:
+  JF_URL: ${{ vars.JF_URL }}
+  JF_PROJECT: ${{ vars.JF_PROJECT }}
+
+jobs:
+  build-log4shell-server-image:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: log4shell-goof/log4shell-client
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup JFrog CLI 🐸
+        uses: jfrog/setup-jfrog-cli@v4
+        id: setup-cli
+        env:
+          JF_URL: https://${{ vars.JF_URL }}/
+          JF_PROJECT: ${{ vars.JF_PROJECT }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_TOKEN }}
+
+      - name: Health check JFrog Artifactory instance 🐸
+        run: |
+          jf --version
+          jf rt ping
+          jf config show
+
+
+      - name: maven build
+        run: |
+          echo "show version"
+          mvn --version
+          echo "maven build"
+          jf mvn clean verify
+          echo "maven deploy"
+          jf mvn deploy
+
+    #   - name: publish build info
+    #     run: |
+    #       jf rt build-collect-env 
+    #       jf rt build-add-dependencies .
+    #       jf rt build-add-git
+    #       jf rt build-publish
+
