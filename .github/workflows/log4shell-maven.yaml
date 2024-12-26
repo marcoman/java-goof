@@ -6,13 +6,13 @@ on:
       - 'main'
     paths:
       - 'log4shell-goof/log4shell-goof-server/**'
-      - '.github/workflows/log4shell-goof-server-docker-image.yaml'
+      - '.github/workflows/log4shell-maven.yaml'
   pull_request:
     branches:
       - 'main'
     paths:
       - 'log4shell-goof/log4shell-goof-server/**'
-      - '.github/workflows/log4shell-goof-server-docker-image.yaml'
+      - '.github/workflows/log4shell-maven.yaml'
   workflow_dispatch:
     inputs:
       description:
