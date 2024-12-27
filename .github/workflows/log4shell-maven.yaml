@@ -63,10 +63,12 @@ jobs:
 
       - name: Health check JFrog Artifactory instance 🐸
         run: |
+          jf mvn-config --repo-deploy-releases ${{vars.JF_MAVEN_REPO}} --repo-deploy-snapshots ${{vars.JF_MAVEN_REPO}} --repo-resolve-releases ${{vars.JF_MAVEN_REPO}} --repo-resolve-snapshots ${{vars.JF_MAVEN_REPO}}
           jf --version
           jf rt ping
           jf config show
-
+          echo "Show the maven.yaml contents"
+          cat .jfrog/projects/maven.yaml
 
       - name: maven build
         run: |
