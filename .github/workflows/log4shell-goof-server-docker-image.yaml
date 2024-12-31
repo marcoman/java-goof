@@ -103,3 +103,9 @@ jobs:
           jf rt build-add-git
           jf rt build-publish
 
+      - name: build scan
+        run: |
+          echo "sleeping for 60 seconds"
+          sleep 60
+          echo "waking up."
+          jf build-scan
