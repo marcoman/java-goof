@@ -5,13 +5,13 @@ on:
     branches:
       - 'main'
     paths:
-      - 'log4shell-goof/log4shell-goof-server/**'
+      - 'log4shell-goof/log4shell-goof-client/**'
       - '.github/workflows/log4shell-maven.yaml'
   pull_request:
     branches:
       - 'main'
     paths:
-      - 'log4shell-goof/log4shell-goof-server/**'
+      - 'log4shell-goof/log4shell-goof-client/**'
       - '.github/workflows/log4shell-maven.yaml'
   workflow_dispatch:
     inputs:
@@ -32,7 +32,7 @@ env:
   JF_PROJECT: ${{ vars.JF_PROJECT }}
 
 jobs:
-  build-log4shell-server-image:
+  build-log4shell-client-image:
     runs-on: ubuntu-24.04
     defaults:
       run:
