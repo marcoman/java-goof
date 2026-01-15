@@ -72,10 +72,10 @@ jobs:
 
       - name: maven build
         run: |
-          echo "show version"
-          mvn --version
-          echo "maven build"
-          mvn clean verify
+          #echo "show version"
+          #mvn --version
+          #echo "maven build"
+          #mvn clean verify
           echo "maven build - with wrapper"
           jf mvn clean verify
           echo "maven deploy"
